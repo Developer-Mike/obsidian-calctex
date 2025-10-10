@@ -85,6 +85,8 @@ class CalctexHintRenderer implements PluginValue {
             };
 
             const formattedFormula = formula.replace("\\\\", "").replace("&", "");
+			let expressionSupJson = {};
+
 
             // Add variables from previous lines
             for (const previousLine of previousLatexLines) {
@@ -94,15 +96,30 @@ class CalctexHintRenderer implements PluginValue {
                   .replace('\\\\', '')
                   .replace('&', '');
 
-                if (formattedPreviousLine.indexOf(':=') === -1) continue;
+                if (formattedPreviousLine.indexOf(':=') > -1) {
+					calculationEngine.parse(formattedPreviousLine).evaluate();
+					continue;
+				}
 
-                calculationEngine.parse(formattedPreviousLine).evaluate();
+				const lineExpression = calculationEngine.parse(formattedPreviousLine).simplify();
+
+                const lineExpressionParts = lineExpression.latex.split("=");
+                if (lineExpressionParts.length <= 1) continue;
+
+				const jsonValue = calculationEngine.parse(lineExpressionParts[lineExpressionParts.length - 1].trim()).json;
+
+				expressionSupJson = Object.assign(
+					expressionSupJson,
+					{ [lineExpressionParts[0].trim()]: jsonValue, }
+				);
+
               } catch (e) {
                 console.error(e);
               }
             }
-						
+
             let expression = calculationEngine.parse(formattedFormula);
+			expression = expression.subs(expressionSupJson);
 
             // Calculate the expression
             let result = null;
