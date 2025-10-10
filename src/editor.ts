@@ -85,7 +85,6 @@ class CalctexHintRenderer implements PluginValue {
             };
 
             const formattedFormula = formula.replace("\\\\", "").replace("&", "");
-            let expression = calculationEngine.parse(formattedFormula);
 
             // Add variables from previous lines
             for (const previousLine of previousLatexLines) {
@@ -102,6 +101,8 @@ class CalctexHintRenderer implements PluginValue {
                 console.error(e);
               }
             }
+						
+            let expression = calculationEngine.parse(formattedFormula);
 
             // Calculate the expression
             let result = null;
