@@ -81,7 +81,7 @@ class CalctexHintRenderer implements PluginValue {
               digitGroupSeparator : CalctexPlugin.INSTANCE.settings.groupSeparator,
               fractionalDigits: (isApproximation && CalctexPlugin.INSTANCE.settings.approxDecimalPrecision !== -1 ) 
                 ? CalctexPlugin.INSTANCE.settings.approxDecimalPrecision
-                : "auto" as 'auto',
+                : "max" as 'max',
             };
 
             const formattedFormula = formula.replace("\\\\", "").replace("&", "");
@@ -91,18 +91,16 @@ class CalctexHintRenderer implements PluginValue {
             for (const previousLine of previousLatexLines) {
               try {
                 // Remove the last line break and align sign
-                const formattedPreviousLine = previousLine.replace("\\\\", "").replace("&", "");
-                const lineExpression = calculationEngine.parse(formattedPreviousLine).simplify();
+                const formattedPreviousLine = previousLine
+                  .replace('\\\\', '')
+                  .replace('&', '');
 
-                const lineExpressionParts = lineExpression.latex.split("=");
-                if (lineExpressionParts.length <= 1) continue; 
+                if (formattedPreviousLine.indexOf(':=') === -1) continue;
 
-                  const jsonValue = calculationEngine.parse(lineExpressionParts[lineExpressionParts.length - 1].trim()).json;
-  
-                  expression = expression.subs({
-                    [lineExpressionParts[0].trim()]: jsonValue,
-                  });
-              } catch (e) { console.error(e); }
+                calculationEngine.parse(formattedPreviousLine).evaluate();
+              } catch (e) {
+                console.error(e);
+              }
             }
 
             // Calculate the expression
