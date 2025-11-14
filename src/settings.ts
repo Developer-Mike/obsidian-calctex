@@ -1,5 +1,5 @@
-import CalctexPlugin from "./main";
-import { App, PluginSettingTab, Setting } from "obsidian";
+import CalctexPlugin from "./main"
+import { App, PluginSettingTab, Setting } from "obsidian"
 
 export interface CalctexPluginSettings {
   calculationTriggerString: string
@@ -18,20 +18,20 @@ export const DEFAULT_SETTINGS: Partial<CalctexPluginSettings> = {
   completionTriggerKey: "Tab",
   multiplicationSymbol: "*",
   groupSeparator: "'",
-  decimalSeparator: "."
-};
+  decimalSeparator: ".",
+}
 
 export class CalctexSettingTab extends PluginSettingTab {
-  plugin: CalctexPlugin;
+  plugin: CalctexPlugin
 
   constructor(app: App, plugin: CalctexPlugin) {
-    super(app, plugin);
-    this.plugin = plugin;
+    super(app, plugin)
+    this.plugin = plugin
   }
 
   display(): void {
-    const { containerEl } = this;
-    containerEl.empty();
+    const { containerEl } = this
+    containerEl.empty()
 
     new Setting(containerEl)
       .setName("Calculation Trigger String")
@@ -41,11 +41,11 @@ export class CalctexSettingTab extends PluginSettingTab {
           .setPlaceholder("Type a string here")
           .setValue(this.plugin.settings.calculationTriggerString)
           .onChange(async (value) => {
-            this.plugin.settings.calculationTriggerString = value;
-            await this.plugin.saveSettings();
-          })
-      );
-    
+            this.plugin.settings.calculationTriggerString = value
+            await this.plugin.saveSettings()
+          }),
+      )
+
     new Setting(containerEl)
       .setName("Approximation Trigger String")
       .setDesc("The string that triggers approximation.")
@@ -54,10 +54,10 @@ export class CalctexSettingTab extends PluginSettingTab {
           .setPlaceholder("Type a string here")
           .setValue(this.plugin.settings.approxCalculationTriggerString)
           .onChange(async (value) => {
-            this.plugin.settings.approxCalculationTriggerString = value;
-            await this.plugin.saveSettings();
-          })
-      );
+            this.plugin.settings.approxCalculationTriggerString = value
+            await this.plugin.saveSettings()
+          }),
+      )
 
     new Setting(containerEl)
       .setName("Approximation Precision")
@@ -67,10 +67,10 @@ export class CalctexSettingTab extends PluginSettingTab {
           .setPlaceholder("Type a number here")
           .setValue(this.plugin.settings.approxDecimalPrecision.toString())
           .onChange(async (value) => {
-            this.plugin.settings.approxDecimalPrecision = parseInt(value);
-            await this.plugin.saveSettings();
-          })
-      );
+            this.plugin.settings.approxDecimalPrecision = parseInt(value)
+            await this.plugin.saveSettings()
+          }),
+      )
 
     new Setting(containerEl)
       .setName("Completion Trigger Key")
@@ -80,10 +80,10 @@ export class CalctexSettingTab extends PluginSettingTab {
           .setPlaceholder("Type name of a key here")
           .setValue(this.plugin.settings.completionTriggerKey)
           .onChange(async (value) => {
-            this.plugin.settings.completionTriggerKey = value;
-            await this.plugin.saveSettings();
-          })
-      );
+            this.plugin.settings.completionTriggerKey = value
+            await this.plugin.saveSettings()
+          }),
+      )
 
     new Setting(containerEl)
       .setName("Multiplication Symbol")
@@ -93,10 +93,10 @@ export class CalctexSettingTab extends PluginSettingTab {
           .setPlaceholder("Type a symbol here")
           .setValue(this.plugin.settings.multiplicationSymbol)
           .onChange(async (value) => {
-            this.plugin.settings.multiplicationSymbol = value;
-            await this.plugin.saveSettings();
-          })
-      );
+            this.plugin.settings.multiplicationSymbol = value
+            await this.plugin.saveSettings()
+          }),
+      )
 
     new Setting(containerEl)
       .setName("Group Separator")
@@ -106,22 +106,24 @@ export class CalctexSettingTab extends PluginSettingTab {
           .setPlaceholder("Type a symbol here")
           .setValue(this.plugin.settings.groupSeparator)
           .onChange(async (value) => {
-            this.plugin.settings.groupSeparator = value;
-            await this.plugin.saveSettings();
-          })
-      );
+            this.plugin.settings.groupSeparator = value
+            await this.plugin.saveSettings()
+          }),
+      )
 
     new Setting(containerEl)
       .setName("Decimal Separator")
-      .setDesc("The symbol used for defining where the decimal point is (e.g. , or .)")
+      .setDesc(
+        "The symbol used for defining where the decimal point is (e.g. , or .)",
+      )
       .addText((text) =>
         text
           .setPlaceholder("Type a symbol here")
           .setValue(this.plugin.settings.decimalSeparator)
           .onChange(async (value) => {
-            this.plugin.settings.decimalSeparator = value;
-            await this.plugin.saveSettings();
-          })
-      );
+            this.plugin.settings.decimalSeparator = value
+            await this.plugin.saveSettings()
+          }),
+      )
   }
 }

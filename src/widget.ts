@@ -1,39 +1,46 @@
-import { EditorView, WidgetType } from "@codemirror/view";
-import CalctexPlugin from "./main";
+import { EditorView, WidgetType } from "@codemirror/view"
+import CalctexPlugin from "./main"
 
 export class ResultWidget extends WidgetType {
-  insertLocation: number;
-  resultText: string;
-  keyListener: (event: KeyboardEvent) => void;
+  insertLocation: number
+  resultText: string
+  keyListener: (event: KeyboardEvent) => void
 
-  constructor(public view: EditorView, public index: number, public text: string) {
-    super();
+  constructor(
+    public view: EditorView,
+    public index: number,
+    public text: string,
+  ) {
+    super()
   }
 
   toDOM(_view: EditorView): HTMLElement {
-    document.removeEventListener("keydown", this.keyListener, true);
+    document.removeEventListener("keydown", this.keyListener, true)
 
-    const div = document.createElement("span");
-    div.className = "result-text";
-    
-    this.insertLocation = this.index;
-    this.resultText = this.text;
+    const div = document.createElement("span")
+    div.className = "result-text"
 
-    div.innerText = this.text;
+    this.insertLocation = this.index
+    this.resultText = this.text
+
+    div.innerText = this.text
     this.keyListener = (event) => {
-      if (event.key !== CalctexPlugin.INSTANCE.settings.completionTriggerKey) return;
-      event.preventDefault();
-      this.insertToDOM();
+      if (event.key !== CalctexPlugin.INSTANCE.settings.completionTriggerKey)
+        return
+      event.preventDefault()
+      this.insertToDOM()
     }
-    document.addEventListener("keydown", this.keyListener, true);
-    div.onclick = () => { this.insertToDOM(); };
+    document.addEventListener("keydown", this.keyListener, true)
+    div.onclick = () => {
+      this.insertToDOM()
+    }
 
-    return div;
+    return div
   }
 
   destroy(dom: HTMLElement): void {
-    document.removeEventListener("keydown", this.keyListener, true);
-    dom.remove();
+    document.removeEventListener("keydown", this.keyListener, true)
+    dom.remove()
   }
 
   insertToDOM() {
@@ -46,10 +53,10 @@ export class ResultWidget extends WidgetType {
       selection: {
         anchor: this.insertLocation + this.resultText.length,
         head: this.insertLocation + this.resultText.length,
-      }
-    });
-    this.view.dispatch(transaction);
+      },
+    })
+    this.view.dispatch(transaction)
 
-    document.removeEventListener("keydown", this.keyListener, true);
+    document.removeEventListener("keydown", this.keyListener, true)
   }
 }
