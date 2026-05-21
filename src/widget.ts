@@ -1,3 +1,4 @@
+/* eslint-disable-next-line import/no-extraneous-dependencies -- Included in Obsidian */
 import { EditorView, WidgetType } from "@codemirror/view"
 import CalctexPlugin from "./main"
 
@@ -15,9 +16,10 @@ export class ResultWidget extends WidgetType {
   }
 
   toDOM(_view: EditorView): HTMLElement {
-    document.removeEventListener("keydown", this.keyListener, true)
+    activeDocument.removeEventListener("keydown", this.keyListener, true)
 
-    const div = document.createElement("span")
+    /* eslint-disable-next-line obsidianmd/prefer-create-el -- So we can return it */
+    const div = activeDocument.createElement("span")
     div.className = "result-text"
 
     this.insertLocation = this.index
@@ -30,7 +32,7 @@ export class ResultWidget extends WidgetType {
       event.preventDefault()
       this.insertToDOM()
     }
-    document.addEventListener("keydown", this.keyListener, true)
+    activeDocument.addEventListener("keydown", this.keyListener, true)
     div.onclick = () => {
       this.insertToDOM()
     }
@@ -39,7 +41,7 @@ export class ResultWidget extends WidgetType {
   }
 
   destroy(dom: HTMLElement): void {
-    document.removeEventListener("keydown", this.keyListener, true)
+    activeDocument.removeEventListener("keydown", this.keyListener, true)
     dom.remove()
   }
 
@@ -57,6 +59,6 @@ export class ResultWidget extends WidgetType {
     })
     this.view.dispatch(transaction)
 
-    document.removeEventListener("keydown", this.keyListener, true)
+    activeDocument.removeEventListener("keydown", this.keyListener, true)
   }
 }

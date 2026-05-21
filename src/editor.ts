@@ -1,6 +1,8 @@
-//@ts-ignore
+/* eslint-disable-next-line import/no-extraneous-dependencies -- Included in Obsidian */
 import { syntaxTree } from "@codemirror/language"
+/* eslint-disable-next-line import/no-extraneous-dependencies -- Included in Obsidian */
 import { RangeSetBuilder } from "@codemirror/state"
+/* eslint-disable-next-line import/no-extraneous-dependencies -- Included in Obsidian */
 import {
   Decoration,
   DecorationSet,
@@ -37,7 +39,7 @@ class CalctexHintRenderer implements PluginValue {
       syntaxTree(view.state).iterate({
         from,
         to,
-        enter(node: any) {
+        enter(node: any) { // @eslint-disable-line @typescript-eslint/no-explicit-any -- Too lazy for full typing
           const nodeTags = node.type.name.split("_")
 
           if (nodeTags.contains("formatting-math-begin")) mathBegin = node.to

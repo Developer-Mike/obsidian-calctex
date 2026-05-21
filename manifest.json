@@ -3,7 +3,7 @@
 	"name": "Calctex",
 	"version": "2.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Calculate LaTeX formulas inside Obsidian.",
+	"description": "Calculate LaTeX formulas directly inside the markdown editor.",
 	"author": "Developer-Mike",
 	"authorUrl": "https://github.com/Developer-Mike",
 	"isDesktopOnly": false
